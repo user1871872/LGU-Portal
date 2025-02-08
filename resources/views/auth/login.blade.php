@@ -26,7 +26,7 @@
             <button type="submit" class="btn btn-primary w-100">Login</button>
 
             <div class="mt-3 text-center">
-                <a href="{{ route('register') }}">Don't have an account? Sign Up</a>
+                <a href="">Don't have an account? Sign Up</a>
             </div>
         </form>
     </div>

@@ -11,12 +11,12 @@
 <body>
 <nav class="navbar navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/">LGU-ANDA</a>
+        <a class="navbar-brand" href="/">LGU-ANDA Business Portal</a>
         <div>
             @guest
                 <!-- Show Login and Register if the user is NOT logged in -->
                 <a href="{{ route('login') }}" class="btn btn-outline-light">Login</a>
-                <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
+                <a href="" class="btn btn-primary">Register</a>
             @else
                 <!-- Show User Profile Image and Logout if Logged In -->
                 <div class="dropdown">
@@ -47,8 +47,14 @@
     <main class="py-4">
         @yield('content')
     </main>
-    <main class="py-4">
+    <main class="">
         @yield('dashboard')
+    </main>
+    <main class="">
+        @yield('apply-permit')
+    </main>
+    <main class="">
+        @yield('transaction')
     </main>
     <footer class="bg-dark text-white text-center py-3">
         &copy; 2024 LGU-ANDA. All rights reserved.

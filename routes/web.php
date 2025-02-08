@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ApplyPermitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,18 +19,37 @@ use App\Http\Controllers\Auth\RegisterController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
 
 
-// Login Routes
+// Route::get('/userdashboard', function () {
+//     return view('userdashboard');
+// });
+// Login Route (Single Page for Users & Admins)
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Registration Routes
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+// Admin Dashboard (Only for Admins)
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// User Dashboard Route (Ensure this exists)
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::get('/user/dashboard', function () {
+        return view('user.dashboard');
+    })->name('user.dashboard');
+});
+
+#Apply Permit
+Route::prefix('user')->group(function () {
+    Route::get('/apply-permit', [ApplyPermitController::class, 'index'])->name('apply-permit');
+    Route::post('/apply-permit', [ApplyPermitController::class, 'store'])->name('apply-permit.store');
+});
+
+#Transactions
+Route::get('/user/transactions', [ApplyPermitController::class, 'transactions'])->name('user.transactions');
+Route::get('/apply-permit/{id}/edit', [ApplyPermitController::class, 'edit'])->name('apply-permit.edit');
+Route::put('/user/apply-permit/{id}/update', [ApplyPermitController::class, 'update'])->name('apply-permit.update');
