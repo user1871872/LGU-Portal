@@ -19,15 +19,20 @@ use App\Http\Controllers\ApplyPermitController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/home', function () {
+    return view('welcome');
+});
 
-
-// Route::get('/userdashboard', function () {
-//     return view('userdashboard');
-// });
 // Login Route (Single Page for Users & Admins)
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Show the registration form
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+
+// Handle registration form submission
+Route::post('register', [RegisterController::class, 'register']);
 
 // Admin Dashboard (Only for Admins)
 Route::middleware(['auth', 'admin'])->group(function () {
