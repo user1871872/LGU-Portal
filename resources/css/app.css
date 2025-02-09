@@ -1,0 +1,36 @@
+
+    body, html {
+        margin: 0;
+        padding: 0;
+    }
+
+    nav {
+        margin-bottom: 0;
+    }
+
+    .container-fluid {
+        padding: 0;
+        margin: 0;
+    }
+
+    .row {
+        margin: 0;
+    }
+
+    main {
+        padding: 0;
+        margin: 0;
+    }
+
+    .vh-100 {
+        height: 100vh !important; /* Ensure full viewport height */
+    }
+
+    .sidebar {
+        height: 100%; /* Ensure full height relative to parent */
+    }
+
+    .ms-auto {
+        margin-left: 0 !important; /* Remove extra space */
+    }
+

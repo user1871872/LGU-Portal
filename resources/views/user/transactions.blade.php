@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
-@section('transaction')
+@section('content')
 <div class="container mt-4">
     <h2 class="text-center mb-4">Business Permit Applications</h2>
 

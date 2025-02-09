@@ -10,7 +10,7 @@ class ApplyPermit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'first_name', 'middle_name', 'last_name',
+        'user_id','first_name', 'middle_name', 'last_name',
         'business_name', 'line_of_business', 'business_address',
         'or_number', 'amount_paid', 'contact_number',
         'sanitary_permit', 'barangay_permit'

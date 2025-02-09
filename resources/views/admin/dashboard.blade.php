@@ -1,31 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@section('dashboard')
-<div class="container-fluid vh-100 d-flex">
-    <!-- Sidebar -->
-    <nav class="col-md-2 bg-dark sidebar vh-100 d-flex flex-column position-fixed">
-        <div class="sidebar-sticky py-3">
-            <h4 class="text-white text-center mt-3">LGU-ANDA</h4>
-            <ul class="nav flex-column mt-4">
-                <li class="nav-item">
-                    <a class="nav-link text-white active" href="#"><i class="bi bi-house-door"></i> Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-folder"></i> Applications</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-file-earmark"></i> Business Permit</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#"><i class="bi bi-bar-chart"></i> Reports</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+@section('content')
+<div class="container-fluid p-0 d-flex">
 
-    <!-- Main Content -->
-    <main class="col-md-10 offset-md-2 px-4 d-flex flex-column overflow-auto">
-        <div class="row mt-3">
+    <main class="flex-grow-1 px-4 d-flex flex-column vh-100 overflow-auto">
+
+        <div class="row mt-3 g-3">
             <div class="col-md-3">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
@@ -104,7 +84,7 @@
                 </div>
             </div>
 
-            <!-- Application Status Chart -->
+            <!-- Chart -->
             <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-header bg-dark text-white">Application Status Overview</div>
@@ -114,10 +94,10 @@
                 </div>
             </div>
         </div>
+
     </main>
 </div>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     var ctx = document.getElementById('statusChart').getContext('2d');

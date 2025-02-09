@@ -18,10 +18,8 @@ use App\Http\Controllers\ApplyPermitController;
 
 Route::get('/', function () {
     return view('welcome');
-});
-Route::get('/home', function () {
-    return view('welcome');
-});
+})->name('home');
+
 
 // Login Route (Single Page for Users & Admins)
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -58,3 +56,7 @@ Route::prefix('user')->group(function () {
 Route::get('/user/transactions', [ApplyPermitController::class, 'transactions'])->name('user.transactions');
 Route::get('/apply-permit/{id}/edit', [ApplyPermitController::class, 'edit'])->name('apply-permit.edit');
 Route::put('/user/apply-permit/{id}/update', [ApplyPermitController::class, 'update'])->name('apply-permit.update');
+
+#AdminApplications
+Route::get('/admin/applications', [ApplyPermitController::class, 'adminIndex'])->name('admin.applications');
+Route::post('/admin/applications/{id}/update-status', [ApplyPermitController::class, 'updateStatus'])->name('admin.update-status');
