@@ -31,7 +31,9 @@
                         <td>{{ $app->business_address }}</td>
                         <td>{{ $app->line_of_business }}</td>
                         <td>
-                            <button class="btn btn-sm btn-info">View Comments</button>
+                            <button class="btn btn-sm btn-info view-comments" data-comments="{{ $app->comments }}" data-bs-toggle="modal" data-bs-target="#commentsModal">
+                                View Comments
+                            </button>
                         </td>
                         <td>
                             <span class="badge bg-warning text-dark">{{ ucfirst($app->status) }}</span>
@@ -51,7 +53,32 @@
     </div>
 </div>
 
+<!-- Comments Modal -->
+<div class="modal fade" id="commentsModal" tabindex="-1" aria-labelledby="commentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentsModalLabel">Comments/Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="commentsText">No comments available.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+document.querySelectorAll('.view-comments').forEach(button => {
+    button.addEventListener('click', function () {
+        let comments = this.getAttribute('data-comments') || 'No comments available.';
+        document.getElementById('commentsText').textContent = comments;
+    });
+});
+
 document.getElementById('search').addEventListener('input', function() {
     let filter = this.value.toLowerCase();
     let rows = document.querySelectorAll("#transactionsTable tr");

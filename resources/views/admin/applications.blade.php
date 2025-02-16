@@ -2,8 +2,6 @@
 
 @section('content')
 <div class="container-fluid vh-100 d-flex p-0">
-
-
     <!-- Main Content -->
     <main class="flex-grow-1 px-4 py-4">
         <h2 class="mb-4">Business Applications</h2>
@@ -23,6 +21,7 @@
                         <th>Business Name</th>
                         <th>Attachments</th>
                         <th>Status</th>
+                        <th>Comments</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -42,18 +41,21 @@
                             </td>
                             <td>
                                 <select class="form-select status-select">
-                                    <option {{ $application->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                    <option {{ $application->status == 'Approved' ? 'selected' : '' }}>Approved</option>
-                                    <option {{ $application->status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
+                                    <option value="Pending" {{ $application->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="Approved" {{ $application->status == 'Approved' ? 'selected' : '' }}>Approved</option>
+                                    <option value="Rejected" {{ $application->status == 'Rejected' ? 'selected' : '' }}>Rejected</option>
                                 </select>
                             </td>
                             <td>
-                                <button class="btn btn-secondary btn-sm toggle-comments">Toggle Comments</button>
+                                <textarea class="form-control comments-input" rows="2" placeholder="Enter comments...">{{ $application->comments }}</textarea>
+                            </td>
+                            <td>
+                                <button class="btn btn-success btn-sm update-status">Update</button>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-3">No applications found.</td>
+                            <td colspan="7" class="text-center py-3">No applications found.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -68,25 +70,36 @@
 </div>
 
 <script>
-    document.querySelectorAll('.status-select').forEach(select => {
-        select.addEventListener('change', function () {
-            const applicationId = this.closest('tr').dataset.id;
-            const status = this.value;
+document.querySelectorAll('.update-status').forEach(button => {
+    button.addEventListener('click', function () {
+        const row = this.closest('tr');
+        const applicationId = row.dataset.id;
+        const status = row.querySelector('.status-select').value;
+        const comments = row.querySelector('.comments-input').value;
 
-            fetch(`/admin/applications/${applicationId}/update-status`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: JSON.stringify({ status }),
-            }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Status updated successfully.');
-                }
-            });
+        fetch(`/admin/applications/${applicationId}/update-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify({ status: status, comments: comments }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Status and comments updated successfully.');
+            } else {
+                alert('Update failed. Check console for errors.');
+                console.error(data);
+            }
+        })
+        .catch(error => {
+            alert('An error occurred.');
+            console.error('Error:', error);
         });
     });
+});
+
 </script>
 @endsection

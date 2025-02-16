@@ -22,11 +22,22 @@ class ApplyPermitController extends Controller
     
     public function updateStatus(Request $request, $id)
     {
-    $application = ApplyPermit::findOrFail($id);
-    $application->status = $request->status;
-    $application->save();
-
-    return response()->json(['success' => true]);
+        // Validate request
+        $request->validate([
+            'status' => 'required|string',
+            'comments' => 'nullable|string',
+        ]);
+    
+        // Find application 
+        $application = ApplyPermit::findOrFail($id);
+    
+        // Update fields
+        $application->status = $request->status;
+        $application->comments = $request->comments;
+        $application->save();
+    
+        // Return JSON response
+        return response()->json(['success' => true, 'status' => $application->status, 'comments' => $application->comments]);
     }
 
     public function transactions()
@@ -101,15 +112,15 @@ class ApplyPermitController extends Controller
             'sanitary_permit' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
             'barangay_permit' => 'nullable|file|mimes:pdf,jpg,png|max:2048'
         ]);
-
+    
         $sanitaryPath = $request->file('sanitary_permit') 
             ? $request->file('sanitary_permit')->store('permits', 'public') 
             : null;
-
+    
         $barangayPath = $request->file('barangay_permit') 
             ? $request->file('barangay_permit')->store('permits', 'public') 
             : null;
-
+    
         ApplyPermit::create([
             'user_id' => Auth::id(),
             'first_name' => $request->first_name,
@@ -123,8 +134,11 @@ class ApplyPermitController extends Controller
             'contact_number' => $request->contact_number,
             'sanitary_permit' => $sanitaryPath,
             'barangay_permit' => $barangayPath,
+            'status' => 'pending', // Default status
+            'comments' => null
         ]);
-
+    
         return redirect()->back()->with('success', 'Permit application submitted successfully!');
     }
+    
 }

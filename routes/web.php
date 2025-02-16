@@ -59,4 +59,5 @@ Route::put('/user/apply-permit/{id}/update', [ApplyPermitController::class, 'upd
 
 #AdminApplications
 Route::get('/admin/applications', [ApplyPermitController::class, 'adminIndex'])->name('admin.applications');
-Route::post('/admin/applications/{id}/update-status', [ApplyPermitController::class, 'updateStatus'])->name('admin.update-status');
+Route::post('/admin/applications/{id}/update-status', [ApplyPermitController::class, 'updateStatus'])
+    ->name('admin.applications.update-status');
