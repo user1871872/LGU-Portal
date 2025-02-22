@@ -20,7 +20,7 @@
             <div class="row g-3">
                 <div class="col-md-4">
                     <label class="form-label">First Name</label>
-                    <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
+                    <input type="text" name="first_name" class="form-control" value="{{ auth()->user()->first_name }}" required>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Middle Name</label>
@@ -28,7 +28,8 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Last Name</label>
-                    <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
+                    <input type="text" name="last_name" class="form-control" value="{{ auth()->user()->last_name }}" required>
+
                 </div>
             </div>
         </div>
