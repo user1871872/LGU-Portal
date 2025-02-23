@@ -14,6 +14,11 @@
             </div>
 
             <div class="mb-3">
+                <label for="middle_name" class="form-label">Middle Name</label>
+                <input type="text" name="middle_name" id="middle_name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
                 <label for="last_name" class="form-label">Last Name</label>
                 <input type="text" name="last_name" id="last_name" class="form-control" required>
             </div>
