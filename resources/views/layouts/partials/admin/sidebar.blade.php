@@ -14,7 +14,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">
+                <a class="nav-link text-white" href="{{ route('pk-certificates.index') }}">
                     <i class="bi bi-file-earmark"></i> Business Permit
                 </a>
             </li>

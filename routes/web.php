@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ApplyPermitController;
+use App\Http\Controllers\PkCertificateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,3 +62,11 @@ Route::put('/user/apply-permit/{id}/update', [ApplyPermitController::class, 'upd
 Route::get('/admin/applications', [ApplyPermitController::class, 'adminIndex'])->name('admin.applications');
 Route::post('/admin/applications/{id}/update-status', [ApplyPermitController::class, 'updateStatus'])
     ->name('admin.applications.update-status');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/pk-certificates', [PkCertificateController::class, 'index'])->name('pk-certificates.index');
+    Route::get('/pk-certificates/create', [PkCertificateController::class, 'create'])->name('pk-certificates.create');
+    Route::post('/pk-certificates', [PkCertificateController::class, 'store'])->name('pk-certificates.store');
+    Route::get('/pk-certificates/{id}', [PkCertificateController::class, 'show'])->name('pk-certificates.show');
+    Route::delete('/pk-certificates/{id}', [PkCertificateController::class, 'destroy'])->name('pk-certificates.destroy');
+    });
