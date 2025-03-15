@@ -54,6 +54,7 @@ Route::prefix('user')->group(function () {
 });
 
 #Transactions
+Route::get('/dashboard', [ApplyPermitController::class, 'dashboardStats'])->name('user.dashboard');
 Route::get('/user/transactions', [ApplyPermitController::class, 'transactions'])->name('user.transactions');
 Route::get('/apply-permit/{id}/edit', [ApplyPermitController::class, 'edit'])->name('apply-permit.edit');
 Route::put('/user/apply-permit/{id}/update', [ApplyPermitController::class, 'update'])->name('apply-permit.update');

@@ -33,10 +33,10 @@
                             <td>{{ $application->business_name }}</td>
                             <td>
                                 @if($application->sanitary_permit)
-                                    <a href="{{ asset('storage/'.$application->sanitary_permit) }}" class="text-primary" target="_blank">Sanitary Permit</a>
+                                    <a href="{{ asset($application->sanitary_permit) }}" class="text-primary" target="_blank">Sanitary Permit</a>
                                 @endif
                                 @if($application->barangay_permit)
-                                    <a href="{{ asset('storage/'.$application->barangay_permit) }}" class="text-primary ms-2" target="_blank">Barangay Permit</a>
+                                    <a href="{{ asset($application->sanitary_permit) }}" class="text-primary ms-2" target="_blank">Barangay Permit</a>
                                 @endif
                             </td>
                             <td>
@@ -95,7 +95,7 @@ document.querySelectorAll('.update-status').forEach(button => {
             }
         })
         .catch(error => {
-            alert('An error occurred.');
+            // alert('An error occurred.');
             console.error('Error:', error);
         });
     });

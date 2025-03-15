@@ -13,7 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-
+        Schema::create('apply_permit_documents', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('apply_permit_id')->constrained()->onDelete('cascade');
+            $table->foreignId('document_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-          
-        });
+        Schema::dropIfExists('apply_permit_documents');
     }
 };

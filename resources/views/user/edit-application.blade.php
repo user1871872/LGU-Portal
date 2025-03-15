@@ -62,14 +62,14 @@
                 <label>Sanitary Permit</label>
                 <input type="file" name="sanitary_permit" class="form-control">
                 @if($application->sanitary_permit)
-                    <p>Current File: <a href="{{ asset('storage/' . $application->sanitary_permit) }}" target="_blank">View File</a></p>
+                    <p>Current File:  <a href="{{ asset($application->sanitary_permit) }}" target="_blank">View File</a>
                 @endif
             </div>
             <div class="col-md-6">
                 <label>Barangay Permit</label>
                 <input type="file" name="barangay_permit" class="form-control">
                 @if($application->barangay_permit)
-                    <p>Current File: <a href="{{ asset('storage/' . $application->barangay_permit) }}" target="_blank">View File</a></p>
+                    <p>Current File:  <a href="{{ asset($application->barangay_permit) }}" target="_blank">View File</a>
                 @endif
             </div>
         </div>

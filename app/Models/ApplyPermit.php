@@ -16,3 +16,4 @@ class ApplyPermit extends Model
         'sanitary_permit', 'barangay_permit','status','comments'
     ];
 }
+
