@@ -10,7 +10,9 @@ class Address extends Model
     use HasFactory;
 
     protected $primaryKey = 'address_id';
-    protected $fillable = ['street', 'barangay_id', 'town_id', 'province_id', 'country', 'postal_code'];
+
+   
+    protected $fillable = ['street', 'barangay_id', 'town_id', 'province_id', 'country', 'postal_code', 'apply_permit_id'];
 
     public function barangay()
     {
@@ -25,5 +27,10 @@ class Address extends Model
     public function province()
     {
         return $this->belongsTo(Province::class, 'province_id');
+    }
+
+    public function permit()
+    {
+        return $this->belongsTo(ApplyPermit::class, 'apply_permit_id');
     }
 }

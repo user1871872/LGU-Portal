@@ -4,7 +4,15 @@
 
 <div class="container py-5">
     <div class="mb-4 text-center">
-        <h2 class="fw-bold">Welcome back, <strong>{{ Auth::user()->name ?? 'Guest' }}</strong>!</h2>
+    <h2 class="fw-bold">
+    Welcome back, 
+    <strong>
+        {{ Auth::user()->first_name ?? '' }}
+        {{ Auth::user()->middle_name ?? '' }}
+        {{ Auth::user()->last_name ?? 'Guest' }}
+    </strong>!
+</h2>
+
         <p class="text-muted">Here's a summary of your recent applications.</p>
     </div>
 

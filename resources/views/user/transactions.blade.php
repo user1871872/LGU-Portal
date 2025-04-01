@@ -5,11 +5,13 @@
     <h2 class="text-center mb-4">Business Permit Applications</h2>
 
     <!-- Search Bar -->
-    <input type="text" id="search" class="form-control mb-3" placeholder="Search by Business Name...">
+    <div class="mb-3">
+        <input type="text" id="search" class="form-control text-center" placeholder="Search by Business Name...">
+    </div>
 
     <!-- Transactions Table -->
-    <div class="table-responsive">
-        <table class="table table-bordered text-center">
+    <div class="table-responsive d-flex justify-content-center">
+        <table class="table table-bordered text-center w-100">
             <thead class="table-dark">
                 <tr>
                     <th>#</th>
@@ -28,18 +30,20 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $app->created_at->format('Y-m-d') }}</td>
                         <td>{{ $app->business_name }}</td>
-                        <td>{{ $app->business_address }}</td>
-                        <td>{{ $app->line_of_business }}</td>
+                        <td>{{ $app->province }} {{ $app->town }} {{ $app->barangay }}</td>
+                        <td>{{ $app->businessType->name ?? 'N/A' }}</td>
                         <td>
                             <button class="btn btn-sm btn-info view-comments" data-comments="{{ $app->comments }}" data-bs-toggle="modal" data-bs-target="#commentsModal">
-                                View Comments
+                                View
                             </button>
                         </td>
                         <td>
                             <span class="badge bg-warning text-dark">{{ ucfirst($app->status) }}</span>
                         </td>
                         <td>
-                            <a href="{{ route('apply-permit.edit', $app->id) }}" class="btn btn-warning btn-sm">Edit Application</a>
+                            @if(strtolower(trim($app->status)) !== 'approved')
+                                <a href="{{ route('apply-permit.edit', $app->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -49,7 +53,7 @@
 
     <!-- Pagination -->
     <div class="d-flex justify-content-center mt-3">
-        {{ $applications->links() }}
+        {{ $applications->links('pagination::bootstrap-4') }}
     </div>
 </div>
 
@@ -89,4 +93,26 @@ document.getElementById('search').addEventListener('input', function() {
     });
 });
 </script>
+
+<style>
+/* Table Styling */
+@media (max-width: 768px) {
+    .table-responsive {
+        display: flex;
+        justify-content: center; /* Ensures table is centered */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        font-size: 14px;
+        max-width: 100%;
+    }
+
+    th, td {
+        white-space: nowrap; /* Prevents text from wrapping */
+    }
+}
+</style>
+
 @endsection

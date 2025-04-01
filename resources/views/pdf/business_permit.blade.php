@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Permit</title>
     <style>
+        .hero-section {
+        background: url('/images/logo.jpg') no-repeat center center;
+    }
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -18,9 +21,21 @@
             border: 5px solid red;
         }
         .header {
-            text-align: center;
-            font-size: 20px;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+        width: 100%;
+    }
+    .header-content {
+        flex-grow: 1;
+        text-align: center;
+    }
+    .header img {
+        width: 80px; /* Adjust the size as needed */
+        height: 80px;
+        border-radius: 50%;
+    }
         .title {
             background-color: red;
             color: white;
@@ -38,6 +53,7 @@
             text-align: center;
             font-size: 18px;
             font-weight: bold;
+            display: inline-block;
         }
         .footer {
             margin-top: 20px;
@@ -49,17 +65,21 @@
 <body>
     <div class="container">
         <!-- HEADER -->
-        <div class="header">
-            <p>Republic of the Philippines</p>
-            <p>Province of Bohol</p>
-            <p><strong>MUNICIPALITY OF ANDA</strong></p>
-            <p>BUSINESS PERMITS AND LICENSING OFFICE</p>
-        </div>
+<div class="header">
+    <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Anda%2C_Bohol_seal.jpg?20200702154915" alt="Left Logo"> -->
+    <div class="header-content">
+        <p>Republic of the Philippines</p>
+        <p>Province of Bohol</p>
+        <p><strong>MUNICIPALITY OF ANDA</strong></p>
+        <p>BUSINESS PERMITS AND LICENSING OFFICE</p>
+    </div>
+    <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Anda%2C_Bohol_seal.jpg?20200702154915" alt="Right Logo"> -->
+</div>
 
         <!-- TITLE -->
-        <div class="title">BUSINESS PERMIT 2024</div>
+        <div class="title">BUSINESS PERMIT {{ date('Y') }}</div>
 
-        <div><strong>PERMIT NO.:</strong> __________</div>
+        <div><strong>PERMIT NO.:</strong> {{ $permit->id }}</div>
 
         <p>is granted to:</p>
 
@@ -72,13 +92,14 @@
         <p>Business Name</p>
 
         <!-- BUSINESS LOCATION -->
-        <div class="box">{{ $permit->business_address }}</div>
+        <div class="box">{{ $permit->province }} {{ $permit->town }} {{ $permit->barangay }}</div>
         <p>Business Location</p>
-
+        <span class="box">{{ $permit->businessType->name }}</span>
         <p>Line/Kind of Business</p>
 
         <!-- ISSUED DATE -->
-        <p>Issued on the {{ date('jS \d\a\y \o\f F, Y', strtotime($permit->issued_at)) }} at Anda, Bohol, Philippines.</p>
+        <p>Issued on the {{ \Carbon\Carbon::parse($permit->issued_at)->format('jS \\d\\a\\y \\o\\f F, Y') }} at Anda, Bohol, Philippines.</p>
+
 
         <p><strong>HON. ANGELINA B. SIMACIO</strong><br>Local Chief Executive</p>
 

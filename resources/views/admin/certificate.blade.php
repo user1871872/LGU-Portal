@@ -32,12 +32,10 @@
         <thead>
             <tr>
                 <th>Business Name</th>
-
                 <th>Business Location</th>
                 <th>Business Type</th>
                 <th>Issued Date</th>
                 <th>Certificate</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -45,8 +43,10 @@
             <tr>
                 <td>{{ $certificate->permit->business_name }}</td>
 
-                <td>{{ $certificate->permit->business_address }}</td>
-                <td>{{ $certificate->permit->business_type }}</td>
+                <!-- Display Province, Town, and Barangay -->
+                <td>{{ $certificate->permit->province }}, {{ $certificate->permit->town }}, {{ $certificate->permit->barangay }}</td>
+
+                <td>{{ $certificate->permit->businessType->name ?? 'N/A' }}</td>
                 <td>{{ \Carbon\Carbon::parse($certificate->issued_at)->format('F j, Y') }}</td>
                 <td>
                     @if($certificate->file_path)
@@ -54,21 +54,15 @@
                         <a href="{{ asset($certificate->file_path) }}" target="_blank">View Certificate</a>
                     </p>
                     @endif
-
-                </td>
-                <td>
-                    <form action="{{ route('pk-certificates.destroy', $certificate->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
-
-    {{ $certificates->links() }}
+    <!-- ✅ Pagination -->
+    <div class="mt-4 d-flex justify-content-center">
+        {!! $certificates->links() !!}
+    </div>
 </div>
 @endsection

@@ -6,36 +6,50 @@ use Illuminate\Http\Request;
 use App\Models\PkCertificate;
 use App\Models\ApplyPermit;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Notifications\PermitGeneratedNotification;
+use Illuminate\Support\Facades\Notification;
+use App\Models\User;
 
 class PkCertificateController extends Controller
 {
-    // Display all generated certificates
     public function index()
     {
-        $certificates = PkCertificate::with('permit')->orderBy('created_at', 'desc')->paginate(10);
-        $permits = ApplyPermit::all(); // Fetch all permits
+        $certificates = PkCertificate::with('permit')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); 
+    
+        $permits = ApplyPermit::with('businessType') // Load the business type relation
+            ->where('status', 'approved')
+            ->whereDoesntHave('certificate')
+            ->get();
+    
         return view('admin.certificate', compact('certificates', 'permits'));
     }
-
-    // Show form to generate a new business permit
+    
+    
     public function create()
     {
-        $permits = ApplyPermit::all(); // Fetch all permits
-        return view('admin.generate-permit', compact('permits')); // Ensure this file exists
+        $permits = ApplyPermit::all();
+        return view('admin.generate-permit', compact('permits'));
     }
 
-    // Generate PDF and return to browser
-    public function generatePDF($permitId)
+    public function generatePDF()
     {
-        $permit = ApplyPermit::findOrFail($permitId);
+        
+        set_time_limit(300);
+        ini_set('memory_limit', '512M');
 
-        $pdf = Pdf::loadView('pdf.business_permit', compact('permit'))
-            ->setPaper('A4', 'portrait'); // Ensures proper layout
+        
+        $permit = ApplyPermit::find(1); 
 
-        return $pdf->stream('Business_Permit.pdf'); // Stream directly to browser
+        
+        $pdf = PDF::loadView('pdf.business_permit', compact('permit'))
+                  ->setPaper('A4', 'portrait'); 
+
+        
+        return $pdf->download('business_permit.pdf');
     }
 
-    // Store certificate in the default public folder
     public function store(Request $request)
     {
         $request->validate([
@@ -44,52 +58,52 @@ class PkCertificateController extends Controller
     
         $permit = ApplyPermit::findOrFail($request->permit_id);
     
-        // Define directory and filename
         $directory = public_path('certificates');
         $fileName = 'business_permit_' . $permit->id . '_' . time() . '.pdf';
         $filePath = $directory . '/' . $fileName;
     
-        // 🔥 Ensure the directory exists
         if (!file_exists($directory)) {
-            mkdir($directory, 0777, true); // Create directory with full permissions
+            mkdir($directory, 0777, true);
         }
     
-        // Generate PDF and save it in `public/certificates/`
+        // Generate PDF
         $pdf = Pdf::loadView('pdf.business_permit', compact('permit'));
-        file_put_contents($filePath, $pdf->output()); // Save the file
+        file_put_contents($filePath, $pdf->output());
     
-        // Save to database (relative path)
-        PkCertificate::create([
+        // Store in database
+        $certificate = PkCertificate::create([
             'permit_id' => $request->permit_id,
             'issued_at' => now(),
-            'file_path' => 'certificates/' . $fileName, // Store relative path
+            'file_path' => 'certificates/' . $fileName,
         ]);
+    
+        
+        $user = $permit->user; 
+        if ($user) {
+            $user->notify(new PermitGeneratedNotification($certificate));
+        }
     
         return redirect()->route('pk-certificates.index')->with('success', 'Business permit generated successfully.');
     }
     
-
-    // Show a specific certificate
     public function show($id)
     {
         $certificate = PkCertificate::with('permit')->findOrFail($id);
         return view('admin.certificates.show', compact('certificate'));
     }
 
-    // Delete a certificate and its file
-    public function destroy($id)
-    {
-        $certificate = PkCertificate::findOrFail($id);
-        $fullPath = public_path($certificate->file_path); // Get full path in `public/certificates/`
+    // public function destroy($id)
+    // {
+    //     $certificate = PkCertificate::findOrFail($id);
+    //     $fullPath = public_path($certificate->file_path); 
 
-        // Delete the file from `public/certificates/`
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
-        }
+ 
+    //     if (file_exists($fullPath)) {
+    //         unlink($fullPath);
+    //     }
 
-        // Delete the record
-        $certificate->delete();
+    //     $certificate->delete();
 
-        return redirect()->route('pk-certificates.index')->with('success', 'Certificate deleted successfully.');
-    }
+    //     return redirect()->route('pk-certificates.index')->with('success', 'Certificate deleted successfully.');
+    // }
 }

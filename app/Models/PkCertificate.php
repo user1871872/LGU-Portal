@@ -15,7 +15,6 @@ class PkCertificate extends Model
         'file_path',
     ];
 
-    // Define the relationship with ApplyPermit
     public function permit()
     {
         return $this->belongsTo(ApplyPermit::class, 'permit_id');

@@ -8,18 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Document extends Model
 {
     use HasFactory;
-
+    protected $primaryKey = 'document_id';
     protected $fillable = [
-        'document_name',
-        'description',
-        'is_mandatory',
-        'file_format',
-        'max_file_size',
+        'apply_permit_id', 'sanitary_permit', 'barangay_permit',
+        'dti_certificate', 'official_receipt', 'police_clearance', 'tourism_compliance_certificate'
     ];
 
-    public function applyPermits()
+    public function applyPermit()
     {
-        return $this->belongsToMany(ApplyPermit::class, 'apply_permit_documents', 'document_id', 'apply_permit_id')
-            ->withTimestamps();
+        return $this->belongsTo(ApplyPermit::class, 'apply_permit_id');
     }
 }
